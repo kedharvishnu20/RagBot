@@ -1,0 +1,1420 @@
+/* Bootstrap Custom Theme for RAG AI Chat
+ * A modern, responsive theme using Bootstrap framework
+ */
+
+:root {
+  /* Color scheme - refined with more sophisticated colors */
+  --bs-primary: #8a63d2; /* Richer purple with higher contrast */
+  --bs-primary-rgb: 138, 99, 210;
+  --bs-secondary: #2ee59d; /* Teal-leaning green for better harmony */
+  --bs-secondary-rgb: 46, 229, 157;
+  --bs-dark: #0e1116; /* Darker background for better contrast */
+  --bs-dark-rgb: 14, 17, 22;
+  --bs-light: #f8f9fa;
+  --bs-light-rgb: 248, 249, 250;
+
+  /* Custom colors - improved contrasts and harmony */
+  --chat-bg-dark: #131820; /* Deeper blue-dark background */
+  --chat-bg-darker: #0c1015; /* Even darker background for sidebar */
+  --chat-bg-light: #1e2530; /* Richer dark blue-gray for bubbles */
+  --chat-text-light: #ffffff; /* Pure white for better readability */
+  --chat-text-muted: #c0c7d0; /* Brighter muted text for better readability */
+  --chat-border: #2c3440; /* Subtle but visible border */
+
+  /* UI Colors - sophisticated with higher contrast */
+  --user-color: #00000000; /*Vibrant blue with deeper tone */
+  --rag-color: #00000000; /* Teal-green for RAG (less neon) */
+  --gemini-color: #00000000; /* Rich purple */
+  --meta-color: #00000000; /* Vibrant but slightly deeper red */
+
+  /* Spacing and sizing */
+  --sidebar-width: 280px;
+  --chat-max-width: 800px;
+  --bubble-max-width: 80%;
+
+  /* Button styling variables */
+  --button-height: 42px;
+  --button-min-width: 160px;
+  --button-border-width: 1.5px;
+  --button-border-radius: 8px;
+  --button-padding: 0.7rem 1.5rem;
+  --button-margin: 8px;
+  --button-hover-opacity: 0.1;
+  --button-transition: all 0.2s ease;
+}
+
+/* Base styles */
+body {
+  min-height: 100vh;
+  background-color: var(--chat-bg-dark);
+  color: var(--chat-text-light);
+  display: flex;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Improved scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--chat-bg-darker);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--chat-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bs-primary);
+}
+
+/* Layout containers - enhanced sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: linear-gradient(
+    180deg,
+    var(--chat-bg-darker) 0%,
+    rgba(12, 16, 21, 0.98) 100%
+  ); /* Subtle gradient */
+  border-right: 1px solid var(--chat-border);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1030;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem; /* More padding */
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+}
+
+.sidebar h2 {
+  color: var(--bs-primary);
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(var(--bs-primary-rgb), 0.2);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+}
+
+.sidebar h3.sidebar-title {
+  color: var(--chat-text-light);
+  font-size: 0.95rem;
+  margin-bottom: 0.65rem;
+  font-weight: 500;
+  opacity: 0.9;
+  letter-spacing: 0.3px;
+}
+
+.sidebar-label {
+  color: var(--chat-text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sidebar-section {
+  margin-bottom: 1.8rem;
+  position: relative;
+  padding: 0.25rem 0;
+}
+
+.sidebar-divider {
+  height: 2px; /* Thicker divider */
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--chat-border) 50%,
+    transparent
+  ); /* Gradient divider */
+  margin: 1.5rem 0;
+  opacity: 0.4;
+  border-radius: 1px;
+}
+
+/* Main content area */
+.main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Chat container */
+.chatgpt-chat {
+  width: 100%;
+  max-width: var(--chat-max-width);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 80px); /* Full height minus input area */
+  padding: 1rem 0.5rem;
+  position: relative;
+  margin-bottom: 80px; /* Space for input bar */
+}
+
+.chatgpt-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+  height: calc(100vh - 120px); /* Ensure proper height on laptop screens */
+  min-height: 300px;
+}
+
+/* Message groups styling - new additions */
+.message-group {
+  width: 100%;
+  padding: 12px 0;
+  position: relative;
+}
+
+/* Add subtle background differences for user vs AI message groups */
+.message-group.user-group {
+  background-color: rgba(var(--bs-primary-rgb), 0.03);
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  width: 100% !important;
+}
+
+.message-group.assistant-group {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Message bubbles */
+.chatgpt-bubble {
+  display: flex;
+  gap: 16px; /* Increased gap for better spacing */
+  align-items: flex-start;
+  max-width: 100%;
+  width: 100%;
+  animation: fadeIn 0.3s ease;
+  margin-bottom: 22px; /* More space between conversation bubbles */
+  padding: 0 12px; /* More horizontal padding */
+  position: relative; /* For potential decorative elements */
+  justify-content: flex-start; /* Explicitly align AI messages to the left */
+}
+
+/* Enforce user bubbles on the right side */
+.chatgpt-bubble.user {
+  flex-direction: row-reverse;
+  justify-content: flex-end !important; /* Force right alignment */
+  margin-left: auto !important;
+  text-align: right !important;
+  width: 100%;
+}
+
+.chatgpt-avatar {
+  width: 44px; /* Slightly larger avatar */
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem; /* Larger emoji for better visibility */
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); /* Stronger shadow for depth */
+  margin-top: 2px; /* Better vertical alignment with content */
+  border: 2px solid rgba(255, 255, 255, 0.15); /* Subtle border for dimension */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+.chatgpt-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chatgpt-bubble.user .chatgpt-avatar {
+  background: var(--user-color);
+}
+
+.chatgpt-bubble-rag .chatgpt-avatar {
+  background: var(--rag-color);
+  color: var(--chat-bg-dark);
+}
+
+.chatgpt-bubble-gemini .chatgpt-avatar {
+  background: var(--gemini-color);
+}
+
+.chatgpt-bubble-meta .chatgpt-avatar {
+  background: var(--meta-color);
+}
+
+.chatgpt-bubble-content {
+  background: var(--chat-bg-light);
+  color: var(--chat-text-light);
+  border-radius: 1.2rem;
+  padding: 1rem 1.2rem;
+  font-size: 0.97rem;
+  line-height: 1.6;
+  word-break: break-word;
+  max-width: var(--bubble-max-width);
+  border: 1px solid var(--chat-border);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  position: relative; /* For speech bubble styling */
+  float: left; /* Force AI bubbles to the left */
+}
+
+.chatgpt-bubble.user .chatgpt-bubble-content {
+  background: rgba(var(--bs-primary-rgb), 0.12);
+  border-color: rgba(var(--bs-primary-rgb), 0.25);
+  border-top-right-radius: 4px; /* Less sharp corner */
+  box-shadow: 0 3px 10px rgba(var(--bs-primary-rgb), 0.07);
+  float: right; /* Force user bubbles to the right */
+  text-align: left; /* Ensure text alignment is consistent */
+}
+
+.chatgpt-bubble-rag .chatgpt-bubble-content {
+  background: rgba(0, 214, 143, 0.08); /* Using the new RAG color */
+  border-color: rgba(0, 214, 143, 0.2);
+  border-top-left-radius: 4px; /* Less sharp corner */
+  box-shadow: 0 3px 10px rgba(0, 214, 143, 0.07);
+}
+
+.chatgpt-bubble-gemini .chatgpt-bubble-content {
+  background: rgba(167, 106, 255, 0.08); /* Using the new Gemini color */
+  border-color: rgba(167, 106, 255, 0.2);
+  border-top-left-radius: 4px; /* Less sharp corner */
+  box-shadow: 0 3px 10px rgba(167, 106, 255, 0.07);
+}
+
+.chatgpt-bubble-meta .chatgpt-bubble-content {
+  background: rgba(255, 59, 80, 0.08); /* Using the new Meta color */
+  border-color: rgba(255, 59, 80, 0.2);
+  border-top-left-radius: 4px; /* Less sharp corner */
+  box-shadow: 0 3px 10px rgba(255, 59, 80, 0.07);
+}
+
+/* Message titles styling - enhanced with subtle effects */
+.msg-title-user {
+  color: var(--user-color);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  text-align: left !important;
+}
+
+.msg-title-rag {
+  color: var(--rag-color);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+}
+
+.msg-title-gemini {
+  color: var(--gemini-color);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+}
+
+.msg-title-meta {
+  color: var(--meta-color);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+}
+
+/* Source References Styling */
+.source-references {
+  margin-top: 0.8rem;
+  margin-left: 60px; /* Align with message content, accounting for avatar */
+  padding-left: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--chat-text-muted);
+  animation: fadeIn 0.4s ease-in-out;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.source-label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+  color: var(--chat-text-light);
+  opacity: 0.8;
+}
+
+.source-ref {
+  display: inline-block;
+  background: rgba(var(--bs-primary-rgb), 0.15);
+  color: var(--bs-primary);
+  padding: 0.3rem 0.6rem;
+  margin: 0.2rem 0.4rem 0.2rem 0;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1px solid rgba(var(--bs-primary-rgb), 0.3);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  line-height: 1;
+  min-width: 32px;
+  text-align: center;
+}
+
+.source-ref:hover {
+  background: rgba(var(--bs-primary-rgb), 0.25);
+  color: var(--chat-text-light);
+  border-color: rgba(var(--bs-primary-rgb), 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(var(--bs-primary-rgb), 0.3);
+}
+
+/* RAG-specific source styling */
+.chatgpt-bubble-rag .source-ref {
+  background: rgba(0, 214, 143, 0.15);
+  color: var(--rag-color);
+  border-color: rgba(0, 214, 143, 0.3);
+}
+
+.chatgpt-bubble-rag .source-ref:hover {
+  background: rgba(0, 214, 143, 0.25);
+  border-color: rgba(0, 214, 143, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 214, 143, 0.3);
+}
+
+/* Gemini-specific source styling */
+.chatgpt-bubble-gemini .source-ref {
+  background: rgba(167, 106, 255, 0.15);
+  color: var(--gemini-color);
+  border-color: rgba(167, 106, 255, 0.3);
+}
+
+.chatgpt-bubble-gemini .source-ref:hover {
+  background: rgba(167, 106, 255, 0.25);
+  border-color: rgba(167, 106, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(167, 106, 255, 0.3);
+}
+
+/* Meta-specific source styling */
+.chatgpt-bubble-meta .source-ref,
+.chatgpt-bubble-MetaRAG .source-ref {
+  background: rgba(255, 59, 80, 0.15);
+  color: var(--meta-color);
+  border-color: rgba(255, 59, 80, 0.3);
+}
+
+.chatgpt-bubble-meta .source-ref:hover,
+.chatgpt-bubble-MetaRAG .source-ref:hover {
+  background: rgba(255, 59, 80, 0.25);
+  border-color: rgba(255, 59, 80, 0.5);
+  box-shadow: 0 2px 8px rgba(255, 59, 80, 0.3);
+}
+
+/* Source modal styling */
+.source-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.source-modal-content {
+  background: var(--chat-bg-light);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid var(--chat-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.source-modal h3 {
+  color: var(--chat-text-light);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  border-bottom: 1px solid var(--chat-border);
+  padding-bottom: 0.5rem;
+}
+
+.source-modal-text {
+  color: var(--chat-text-light);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.source-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--chat-text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.source-modal-close:hover {
+  color: var(--chat-text-light);
+}
+
+/* Input bar styling - fixed at bottom with enhanced styling */
+
+.chatgpt-input-bar {
+  position: fixed;
+  left: var(--sidebar-width);
+  right: 0;
+  bottom: 0;
+  /* z-index: 1020; */
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+  /* padding-bottom: 2.2rem; */
+}
+
+.chatgpt-input-inner {
+  background: var(--chat-bg-light);
+  border-radius: 28px; /* Larger, more rounded input */
+  border: 1px solid var(--chat-border);
+  max-width: var(--chat-max-width);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset; /* Enhanced shadow with inner highlight */
+  padding: 0.6rem 1.2rem;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); /* More sophisticated animation */
+}
+
+.chatgpt-input-inner:focus-within {
+  box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.35),
+    0 8px 20px rgba(0, 0, 0, 0.25);
+  border-color: var(--bs-primary);
+  transform: translateY(-2px); /* Subtle lift effect when focused */
+}
+
+.chatgpt-input-inner input {
+  background: transparent;
+  color: var(--chat-text-light);
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 1.05rem; /* Slightly larger text */
+  padding: 0.85rem 0.5rem; /* More vertical padding */
+  font-weight: 400;
+  letter-spacing: 0.2px; /* Better readability */
+}
+
+.chatgpt-input-inner input::placeholder {
+  color: rgba(255, 255, 255, 0.5); /* Better placeholder contrast */
+  font-weight: 300;
+}
+
+.chatgpt-input-inner button {
+  background: linear-gradient(
+    135deg,
+    var(--bs-primary),
+    #6e4db0
+  ); /* Gradient background */
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.6rem 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chatgpt-input-inner button:hover {
+  background: linear-gradient(135deg, #9570dd, var(--bs-primary));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.4);
+}
+
+.chatgpt-input-inner button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(var(--bs-primary-rgb), 0.2);
+}
+
+/* Common button base styles */
+.action-btn {
+  background: transparent;
+  border: 1.5px solid currentColor;
+  border-radius: 8px;
+  min-width: 160px;
+  height: 42px;
+  padding: 0.7rem 1.5rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  position: relative;
+}
+
+.action-btn:hover {
+  background-color: currentColor;
+  color: var(--chat-bg-dark);
+  transform: translateY(-1px);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+/* Button variants with their specific colors */
+.upload-btn {
+  color: var(--user-color);
+}
+
+.rebuild-btn {
+  color: var(--rag-color);
+}
+
+.new-chat-btn {
+  color: var(--gemini-color);
+}
+
+.delete-chat-btn {
+  color: var(--meta-color);
+}
+
+.clear-btn {
+  color: var(--meta-color);
+}
+
+.load-btn {
+  color: var(--user-color);
+}
+
+/* Send button - special case with smaller width */
+.send-btn {
+  min-width: 120px;
+  color: var(--bs-primary);
+}
+
+/* Disabled state */
+.action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Code blocks styling - enhanced for better readability */
+pre,
+code {
+  background: var(--chat-bg-darker) !important;
+  color: #e9ecef !important;
+  border-radius: 6px;
+  font-family: "Menlo", "Monaco", "Consolas", monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+}
+
+pre {
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--chat-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  position: relative;
+}
+
+/* Add a "code" label to pre elements */
+pre::before {
+  content: "code";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.7rem;
+  background: var(--chat-border);
+  color: var(--chat-text-muted);
+  border-bottom-left-radius: 4px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+pre code {
+  background: transparent !important;
+  padding: 0;
+}
+
+/* Inline code styling */
+.chatgpt-bubble-content code:not(pre code) {
+  background: rgba(0, 0, 0, 0.2) !important;
+  color: var(--bs-secondary) !important;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Sources container - enhanced styling */
+.sources-container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: var(--chat-bg-darker);
+  border-left: 1px solid var(--chat-border);
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.sources-container h3 {
+  font-size: 1.15rem;
+  margin-bottom: 1.25rem;
+  color: var(--rag-color);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sources-container h3::before {
+  content: "📚";
+  font-size: 1.3rem;
+}
+
+.source-item {
+  background: var(--chat-bg-light);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.92rem;
+  border-left: 4px solid var(--rag-color);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.source-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.source-name {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--rag-color);
+}
+
+/* Chat item styling for rename functionality */
+.chat-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 2px solid transparent;
+}
+
+/* Basic hover effect for non-selected items */
+.chat-item:not(.active):hover {
+  background: rgba(var(--bs-primary-rgb), 0.1);
+  border-left: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+  transform: translateX(4px);
+}
+
+/* Style for the active/selected chat */
+.chat-item.active {
+  background: rgba(var(--bs-primary-rgb), 0.15);
+  border-left: 2px solid var(--bs-primary);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(var(--bs-primary-rgb), 0.15);
+}
+
+.chat-name {
+  flex-grow: 1;
+  margin-right: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Color effect for hover on non-selected items */
+.chat-item:not(.active):hover .chat-name {
+  color: var(--bs-primary);
+}
+
+/* Style for active chat name */
+.chat-item.active .chat-name {
+  color: var(--bs-primary);
+  font-weight: 500;
+}
+
+/* Animation for bubbles */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* More specificity to force user bubbles to the right */
+.message-group .chatgpt-bubble.user {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end !important;
+  margin-left: auto !important;
+  text-align: right !important;
+  width: 100%;
+}
+
+/* Force content alignment for user bubbles */
+.message-group .chatgpt-bubble.user .chatgpt-bubble-content {
+  float: right !important;
+  margin-left: auto !important;
+}
+
+/* Enhanced Animations */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(var(--bs-primary-rgb), 0.4);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(var(--bs-primary-rgb), 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(var(--bs-primary-rgb), 0.4);
+  }
+}
+
+@keyframes typing {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Add typing animation for "thinking" state */
+#spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 4px;
+  height: 20px;
+}
+
+#spinner::before {
+  content: "•••";
+  letter-spacing: 1px;
+  display: inline-block;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+/* Thinking message styling */
+.thinking-bubble .chatgpt-bubble-content {
+  background: linear-gradient(
+    to right,
+    rgba(var(--bs-primary-rgb), 0.05) 0%,
+    rgba(var(--bs-primary-rgb), 0.1) 50%,
+    rgba(var(--bs-primary-rgb), 0.05) 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: pulse-bg 2s infinite ease-in-out !important;
+}
+
+@keyframes pulse-bg {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Enhanced usage stats */
+.usage-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.usage-stats div {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.usage-stats div strong {
+  color: var(--bs-primary);
+}
+
+.usage-stats div:nth-child(1) strong {
+  color: var(--rag-color);
+}
+
+.usage-stats div:nth-child(2) strong {
+  color: var(--gemini-color);
+}
+
+.usage-stats div:nth-child(3) strong {
+  color: var(--meta-color);
+}
+
+.usage-stats div span {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Image styling in messages */
+.chatgpt-bubble-content img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 0.5rem 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.chatgpt-bubble-content img:hover {
+  transform: scale(1.02);
+}
+
+button#new-chat-btn {
+  min-width: 0px;
+  margin-top: 10px;
+}
+div#chat-header {
+  margin-right: 47px;
+}
+/* Link styling */
+.chatgpt-bubble-content a {
+  color: var(--bs-primary);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(var(--bs-primary-rgb), 0.4);
+  transition: all 0.2s ease;
+}
+
+.chatgpt-bubble-content a:hover {
+  color: var(--bs-secondary);
+  border-bottom: 1px solid var(--bs-secondary);
+}
+
+/* AI mode styling - simplified interaction */
+.ai-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ai-mode-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  background-color: var(--chat-bg-light);
+}
+
+/* Ripple effect for the AI mode labels */
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-left: -50px;
+  animation: ripple 0.6s linear;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* Special styling for each AI mode */
+.ai-mode-label:has(input[value="RAG"]:checked) {
+  background: rgba(0, 214, 143, 0.15);
+  color: var(--rag-color);
+}
+
+.ai-mode-label:has(input[value="Gemini"]:checked) {
+  background: rgba(167, 106, 255, 0.15);
+  color: var(--gemini-color);
+}
+
+.ai-mode-label:has(input[value="Meta"]:checked) {
+  background: rgba(255, 59, 80, 0.15);
+  color: var(--meta-color);
+}
+
+/* Simple transitions for checkbox labels */
+.ai-mode-label {
+  transition: all 0.2s ease;
+}
+
+.ai-mode-label:hover {
+  transform: translateY(-1px);
+}
+
+/* Apply a subtle highlight when checked */
+.ai-mode-checkbox:checked + span {
+  font-weight: 500;
+}
+
+/* Improved focus styling for accessibility */
+.ai-mode-checkbox:focus-visible + span {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Add custom tooltip styling */
+.ai-mode-tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  background: var(--chat-bg-darker);
+  color: var(--chat-text-light);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  border: 1px solid var(--chat-border);
+}
+
+.ai-mode-tooltip:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--chat-bg-darker) transparent transparent transparent;
+}
+
+.ai-mode-label:hover .ai-mode-tooltip {
+  opacity: 1;
+  visibility: visible;
+  bottom: 140%;
+}
+
+/* Enhanced Responsive design */
+@media (max-width: 992px) {
+  :root {
+    --sidebar-width: 260px; /* Slightly wider on medium screens */
+    --bubble-max-width: 82%;
+  }
+
+  .chatgpt-messages {
+    height: calc(100vh - 140px); /* Ensure proper height on laptop screens */
+  }
+
+  /* Add some breathing room */
+  .main {
+    padding: 0 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid var(--chat-border);
+    max-height: 300px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Add shadow at bottom */
+    padding: 1rem;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 0 8px;
+  }
+
+  .chatgpt-input-bar {
+    left: 0;
+    padding-bottom: 1.8rem; /* Ensure enough space at bottom on mobile */
+  }
+
+  .chatgpt-chat {
+    height: calc(100vh - 300px - 120px); /* Adjust for sidebar and input */
+  }
+
+  .chatgpt-messages {
+    height: calc(100vh - 300px - 130px); /* Proper adjustment for mobile */
+    padding: 0.75rem 0.25rem;
+  }
+
+  .chatgpt-bubble-content {
+    max-width: 80%;
+    font-size: 0.9rem;
+  }
+
+  .chatgpt-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+
+  .chatgpt-input-bar {
+    left: 0;
+    padding-bottom: 1.5rem;
+  }
+
+  .message-group {
+    padding: 8px 0;
+  }
+
+  .chatgpt-bubble {
+    margin-bottom: 16px;
+    gap: 10px;
+  }
+
+  /* Ensure rename icon is visible on mobile */
+  .chat-item .rename-icon {
+    opacity: 1;
+  }
+
+  :root {
+    --bubble-max-width: 88%;
+  }
+
+  /* Make sidebar sections more compact */
+  .sidebar-section {
+    margin-bottom: 1.2rem;
+  }
+
+  .sidebar-divider {
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .chatgpt-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    margin-top: 4px; /* Better alignment on small screens */
+  }
+
+  .chatgpt-bubble {
+    gap: 10px; /* Less gap on small screens */
+    padding: 0 6px;
+    margin-bottom: 18px;
+  }
+
+  .chatgpt-bubble-content {
+    font-size: 0.92rem;
+    padding: 0.7rem 0.9rem;
+    line-height: 1.5;
+  }
+
+  :root {
+    --bubble-max-width: 92%;
+  }
+
+  .chatgpt-input-inner {
+    padding: 0.45rem 0.8rem;
+    border-radius: 24px;
+  }
+
+  .chatgpt-input-inner input {
+    padding: 0.7rem 0.4rem;
+    font-size: 1rem;
+  }
+
+  .chatgpt-input-bar {
+    padding: 0.75rem 0.3rem 1.5rem 0.8rem;
+  }
+
+  /* Adjust button size on small screens */
+  .chatgpt-input-inner button {
+    padding: 0.5rem 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  /* Make source items more compact */
+  .source-item {
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Make code blocks more readable on small screens */
+  pre {
+    padding: 0.8rem;
+    font-size: 0.85rem;
+    margin: 0.8rem 0;
+  }
+}
+
+/* Ensure the input bar is visible on all screens */
+@media (max-height: 600px) {
+  .chatgpt-messages {
+    height: calc(100vh - 140px);
+    padding-bottom: 60px;
+  }
+}
+
+/* User message group container style */
+.message-group.user-group {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  width: 100% !important;
+}
+
+/* Override any conflicting styles */
+.user-group .chatgpt-bubble.user {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+}
+
+/* Fix for message title in user messages */
+.msg-title-user {
+  text-align: left !important;
+}
+
+/* Show Sources styling */
+.sources-option {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.sources-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.9rem;
+  color: var(--chat-text-light);
+}
+
+.sources-checkbox {
+  cursor: pointer;
+  position: relative;
+  opacity: 1;
+  width: auto;
+  height: auto;
+  margin-right: 5px;
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+}
+
+/* Remove outline on focus while keeping accessibility */
+.sidebar-btn:focus,
+.chat-item:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--bs-primary-rgb), 0.3);
+}
+
+/* Meta AI styling */
+.chatgpt-bubble-meta {
+  border-left-color: #4267b2 !important; /* Meta blue */
+}
+
+/* MetaRAG styling */
+.chatgpt-bubble-MetaRAG {
+  border-left-color: #9c27b0 !important; /* Purple for MetaRAG */
+}
+
+.msg-title-meta {
+  color: #4267b2; /* Meta blue */
+  font-weight: 500;
+}
+
+.msg-title-MetaRAG {
+  color: #9c27b0; /* Purple for MetaRAG */
+  font-weight: 500;
+}
+
+/* Source styling */
+.source-item[data-type="meta_ai"] {
+  border-left-color: #4267b2;
+}
+
+.source-item[data-type="MetaRAG"] {
+  border-left-color: #9c27b0;
+}
+
+/* AI model checkbox styling */
+.ai-mode-label[title*="Pure Meta AI"] {
+  border-left: 3px solid #4267b2;
+}
+
+.ai-mode-label[title*="Meta AI with RAG"] {
+  border-left: 3px solid #9c27b0;
+}
+
+/* Error handling improvements */
+.error-message {
+  color: #dc3545;
+  padding: 10px;
+  background-color: #f8d7da;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* Loading indicators */
+.thinking-indicator {
+  display: inline-block;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Source type styling */
+.source-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.source-type {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rag-source {
+  background: rgba(0, 214, 143, 0.2);
+  color: var(--rag-color);
+}
+
+.MetaRAG-source {
+  background: rgba(156, 39, 176, 0.2);
+  color: #9c27b0; /* Purple for MetaRAG */
+}
+
+.source-item.rag-source-item {
+  border-left-color: var(--rag-color);
+}
+
+.source-item.MetaRAG-source-item {
+  border-left-color: #9c27b0; /* Purple for MetaRAG */
+}

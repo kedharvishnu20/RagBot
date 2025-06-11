@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG AI Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/bootstrap-custom.css">
+    <link rel="stylesheet" href="/static/source-references.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/clean-source-modal.css">
+    <link rel="stylesheet" href="/static/css/enhanced-source-layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/static/js/file-manager.js?v=8&t=3" as="script">
+    <link rel="preload" href="/static/js/ai-config.js?v=5&t=1" as="script">
+    <link rel="preload" href="/static/js/chat-manager.js?v=6&t=2" as="script">
+    <link rel="preload" href="/static/js/main.js?v=6&t=3" as="script">
+
+    <!-- Prevent FOUC and ensure proper loading -->
+    <style>
+        /* Critical CSS for preventing flash of unstyled content */
+        body {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        body.css-loaded {
+            opacity: 1;
+        }
+
+        /* Loading indicator */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #4a90e2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<style>
+    .chat-item {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 60px;
+        /* Increased to accommodate two icons */
+    }
+
+    .chat-name {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .rename-icon {
+        cursor: pointer;
+        position: absolute;
+        opacity: 0.6;
+        transition: opacity 0.2s;
+        font-size: 0.9em;
+    }
+
+    /* Position the icons */
+    .rename-icon[data-action="rename"] {
+        right: 10px;
+    }
+
+    .rename-icon[data-action="delete"] {
+        right: 35px;
+    }
+
+    .rename-icon:hover {
+        opacity: 1;
+    }
+
+    #rename-chat {
+        z-index: 1000;
+        border: 2px solid #4a90e2;
+        border-radius: 4px;
+        padding: 6px 8px;
+    }
+
+    .source-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    }
+
+    .source-modal-content {
+        background: #181818;
+        color: #000;
+        padding: 1rem;
+        border-radius: 4px;
+        max-width: 90%;
+        max-height: 90%;
+        overflow: auto;
+        z-index: 10001;
+    }
+
+    .source-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .source-modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .source-ref {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 2px 6px;
+        margin: 0 2px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .source-ref:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Enhanced MetaRAG Revolutionary AI Styles */
+    .enhanced-MetaRAG-insights {
+        background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(75, 0, 130, 0.1));
+        border: 1px solid rgba(138, 43, 226, 0.3);
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 10px;
+        font-size: 0.85em;
+    }
+
+    .confidence-indicator {
+        display: inline-flex;
+        align-items: center;
+        margin: 2px 8px 2px 0;
+        padding: 2px 6px;
+        border-radius: 12px;
+        font-size: 0.75em;
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .confidence-high {
+        background: linear-gradient(45deg, #00ff88, #00cc70);
+        color: #000;
+    }
+
+    .confidence-medium {
+        background: linear-gradient(45deg, #ffaa00, #ff8800);
+        color: #000;
+    }
+
+    .confidence-low {
+        background: linear-gradient(45deg, #ff4444, #cc3333);
+        color: #fff;
+    }
+
+    .phase-indicator {
+        display: inline-block;
+        background: rgba(138, 43, 226, 0.8);
+        color: white;
+        padding: 1px 6px;
+        border-radius: 10px;
+        font-size: 0.7em;
+        margin: 1px;
+        font-weight: bold;
+    }
+
+    .insights-toggle {
+        cursor: pointer;
+        background: rgba(138, 43, 226, 0.2);
+        border: 1px solid rgba(138, 43, 226, 0.5);
+        border-radius: 15px;
+        padding: 4px 12px;
+        margin-top: 8px;
+        color: #bb88ff;
+        font-size: 0.8em;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .insights-toggle:hover {
+        background: rgba(138, 43, 226, 0.4);
+        color: #ddaaff;
+    }
+
+    .insights-details {
+        display: none;
+        margin-top: 10px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
+        font-size: 0.8em;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .insights-details.expanded {
+        display: block;
+    }
+
+    .revolutionary-badge {
+        display: inline-block;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+        background-size: 200% 200%;
+        animation: revolutionaryGlow 3s ease-in-out infinite;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.7em;
+        font-weight: bold;
+        margin-left: 8px;
+    }
+
+    @keyframes revolutionaryGlow {
+
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .msg-title-MetaRAG {
+        position: relative;
+    }
+
+    .enhanced-MetaRAG-title {
+        background: linear-gradient(45deg, #8a2be2, #4b0082);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        display: inline-block;
+    }
+</style>
+
+<body>
+    <!-- Loading overlay to prevent FOUC -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div>Loading RAG AI Chat...</div>
+    </div>
+
+    <div class="sidebar">
+        <div onclick="togglermenubar()" class="sidebar-toggle">
+            <span class="toggle-icon closed-icon">📂</span>
+            <span class="toggle-icon open-icon">📁</span>
+        </div>
+
+        <div class="sidebar1">
+            <h2>⚙️ Configuration</h2>
+            <div class="sidebar-section">
+                <div class="sidebar-label">Upload documents</div>
+                <form id="upload-form" class="upload-form">
+                    <input type="file" id="file-upload" multiple accept=".pdf,.docx,.txt"
+                        class="file-input form-control form-control-sm mb-2" />
+                    <button type="button" id="upload-btn" class="sidebar-btn action-btn upload-btn">📤 Upload</button>
+                </form>
+                <button id="rebuild-index-btn" class="sidebar-btn action-btn rebuild-btn">🔄 Rebuild Index</button>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Google API Key</div>
+                <select id="api-key-select" class="sidebar-select form-select form-select-sm"></select>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Gemini Model</div>
+                <select id="gemini-model-select" class="sidebar-select form-select form-select-sm">
+                    <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+                    <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite</option>
+                    <option value="gemini-2.5-flash-preview-04-17">gemini-2.5-flash-preview-04-17</option>
+                    <option value="gemini-1.5-flash" selected>gemini-1.5-flash</option>
+                    <option value="gemini-1.5-flash-8b">gemini-1.5-flash-8b</option>
+                </select>
+            </div>
+
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section">
+                <div class="sidebar-label">AI Models</div>
+                <div class="ai-modes"> <label class="ai-mode-label"
+                        title="RAG with Gemini (Retrieval-Augmented Generation)">
+                        <input type="checkbox" value="RAG" class="ai-mode-checkbox">
+                        RAG (Gemini)
+                    </label>
+                    <label class="ai-mode-label" title="Direct Gemini AI Model (No Retrieval)">
+                        <input type="checkbox" value="Gemini" class="ai-mode-checkbox">
+                        Gemini
+                    </label>
+                    <label class="ai-mode-label" title="Pure Meta AI (No Retrieval)">
+                        <input type="checkbox" value="Meta" class="ai-mode-checkbox">
+                        Meta AI
+                    </label>
+                    <label class="ai-mode-label" title="Meta AI with RAG (Retrieval-Augmented Generation)">
+                        <input type="checkbox" value="MetaRAG" class="ai-mode-checkbox">
+                        MetaRAG
+                    </label>
+                </div>
+                <div class="sources-option mt-2">
+                    <label class="sources-label" title="Display Source Information">
+                        <input type="checkbox" id="show-sources" class="sources-checkbox">
+                        Show Sources
+                    </label>
+                </div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">📁 Study Files</h3>
+                <div class="file-search mb-2">
+                    <input type="text" id="file-search" placeholder="Search files..."
+                        class="sidebar-input form-control form-control-sm">
+                </div>
+                <div class="file-list" id="file-list">
+                    <div class="text-center p-2" style="color: rgba(255,255,255,0.6); font-size: 0.85em;">
+                        Loading files...
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">📊 Prompt Mode Usage</h3>
+                <div id="usage-stats" class="usage-stats">
+                    <div><strong>RAG</strong> <span id="rag-count">0</span></div>
+                    <div><strong>Gemini</strong> <span id="gemini-count">0</span></div>
+                    <div><strong>Meta</strong> <span id="meta-count">0</span></div>
+                    <div><strong>MetaRAG</strong> <span id="MetaRAG-count">0</span></div>
+                </div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <h2>
+                <div id="chat-header">💬 Chats</div> <button class="sidebar-btn action-btn new-chat-btn btn mb-2"
+                    id="new-chat-btn">+</button>
+            </h2>
+            <div class="chat-search mb-2">
+                <input type="text" id="chat-search" placeholder="Search chats..."
+                    class="sidebar-input form-control form-control-sm">
+            </div>
+            <div class="chat-list" id="chat-list"></div>
+            <input type="text" id="rename-chat" placeholder="Rename chat..."
+                class="sidebar-input form-control form-control-sm mb-2" style="display:none;">
+
+            <button class="sidebar-btn action-btn clear-btn btn mb-2" id="clear-vector-db">🗑️ Clear Vector DB</button>
+        </div>
+    </div>
+    <div class="main">
+        <div class="chatgpt-chat">
+            <div class="chatgpt-messages" id="chatgpt-messages"></div>
+        </div>
+
+        <div class="chatgpt-input-bar" role="form" aria-label="Send a message">
+            <form class="chatgpt-input-inner" id="message-form">
+                <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off"
+                    aria-label="Type your message" required />
+                <button id="send-btn" type="submit">Send</button>
+                <button id="MCP-btn" type="submit">MCP</button>
+            </form>
+        </div>
+    </div> <!-- External dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Import our modular JavaScript files with cache busting -->
+    <script src="static/js/file-manager.js?v=6&t=3"></script>
+    <script src="static/js/ai-config.js?v=5&t=1"></script>
+    <script src="static/js/enhanced-source-layout.js?v=1&t=1"></script>
+    <script src="static/js/chat-manager.js?v=6&t=2"></script>
+    <script src="static/js/main.js?v=6&t=3"></script><!-- Improved initialization script -->
+    <script>
+        // Enhanced initialization with proper timing and error handling
+        console.log('🚀 Loading modular RAG AI application...');        // Check if CSS is properly loaded
+        function checkCSSLoaded() {
+            try {
+                // Check if our custom CSS variables are loaded
+                const testElement = document.createElement('div');
+                testElement.className = 'sidebar';
+                testElement.style.position = 'absolute';
+                testElement.style.visibility = 'hidden';
+                document.body.appendChild(testElement);
+
+                const computedStyle = window.getComputedStyle(testElement);
+                const isLoaded = computedStyle.getPropertyValue('background-color') !== 'rgba(0, 0, 0, 0)' ||
+                    computedStyle.getPropertyValue('background') !== 'rgba(0, 0, 0, 0)' ||
+                    computedStyle.getPropertyValue('background-color') !== '';
+
+                document.body.removeChild(testElement);
+                console.log('🎨 CSS loaded check result:', isLoaded);
+                return isLoaded;
+            } catch (error) {
+                console.warn('🎨 CSS check failed, proceeding anyway:', error);
+                return true; // Assume loaded if check fails
+            }
+        }
+
+        function hideLoadingOverlay() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                    document.body.classList.add('css-loaded');
+                }, 300);
+            } else {
+                document.body.classList.add('css-loaded');
+            }
+        }
+
+        function initializeApp() {
+            // Use the correct function name and ensure proper timing
+            if (typeof window.initializeApplication === 'function') {
+                try {
+                    window.initializeApplication();
+                    console.log('✅ Application initialization complete - using modular architecture');
+
+                    // Hide loading overlay after successful initialization
+                    hideLoadingOverlay();
+                } catch (error) {
+                    console.error('❌ Application initialization failed:', error);
+                    // Retry after a short delay
+                    setTimeout(() => {
+                        console.log('🔄 Retrying application initialization...');
+                        try {
+                            window.initializeApplication();
+                            hideLoadingOverlay();
+                        } catch (retryError) {
+                            console.error('❌ Retry failed:', retryError);
+                            hideLoadingOverlay(); // Hide overlay even on error
+                        }
+                    }, 500);
+                }
+            } else {
+                console.error('❌ Main initialization function not found. Check main.js loading.');
+                hideLoadingOverlay(); // Hide overlay even on error
+            }
+        } function initializeWhenReady() {
+            console.log('🔍 Checking if CSS and resources are ready...');
+
+            // Use a more robust CSS check
+            const stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
+            let cssLoaded = true;
+
+            stylesheets.forEach(stylesheet => {
+                if (!stylesheet.sheet) {
+                    cssLoaded = false;
+                }
+            });
+
+            // Additional check for our specific CSS
+            const customCSSLoaded = checkCSSLoaded();
+
+            if (cssLoaded && customCSSLoaded) {
+                console.log('🎨 CSS loaded successfully, initializing application...');
+                initializeApp();
+            } else {
+                console.log('⏳ CSS not ready yet, waiting...', { cssLoaded, customCSSLoaded });
+                setTimeout(initializeWhenReady, 100);
+            }
+        }
+
+        // Wait for both DOM and all resources (including CSS) to be fully loaded
+        if (document.readyState === 'complete') {
+            // Already loaded
+            console.log('📄 Document already loaded, checking CSS...');
+            initializeWhenReady();
+        } else {
+            // Wait for full load including CSS
+            window.addEventListener('load', () => {
+                console.log('🎨 All resources loaded, checking CSS and initializing...');
+                initializeWhenReady();
+            });
+
+            // Fallback: also listen for DOMContentLoaded in case load event takes too long
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('🔧 DOM ready, scheduling CSS check and initialization...');
+                // Small delay to ensure CSS is applied
+                setTimeout(initializeWhenReady, 100);
+            });
+        }
+    </script>
+
+    <script>
+        window.addEventListener('unhandledrejection', event => {
+            const msg = event.reason && event.reason.message;
+            if (msg && msg.includes('Could not establish connection')) {
+                console.warn('🔕 Suppressed extension error:', msg);
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+
+</html>

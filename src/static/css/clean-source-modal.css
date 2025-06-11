@@ -1,0 +1,727 @@
+/* Clean Source Modal Styles - Modern, Minimal Design */
+
+/* ================================================
+   CLEAN SOURCE MODAL CONTAINER
+   ================================================ */
+
+.clean-source-container {
+  background: linear-gradient(135deg, #1e2530 0%, #252b3a 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ================================================
+   SOURCE HEADER - CLEAN & MINIMAL
+   ================================================ */
+
+.source-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #2a3441 0%, #343d4e 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.source-file-info h4 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-badge {
+  background: rgba(138, 99, 210, 0.2);
+  color: #8a63d2;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+.source-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+}
+
+.action-btn.primary {
+  background: rgba(138, 99, 210, 0.2);
+  color: #8a63d2;
+}
+
+.action-btn.primary:hover {
+  background: rgba(138, 99, 210, 0.3);
+  transform: translateY(-1px);
+}
+
+.action-btn.secondary {
+  background: rgba(46, 229, 157, 0.2);
+  color: #2ee59d;
+}
+
+.action-btn.secondary:hover {
+  background: rgba(46, 229, 157, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ================================================
+   CLEAN TAB NAVIGATION
+   ================================================ */
+
+.clean-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.2);
+  margin: 0;
+  padding: 0;
+}
+
+.clean-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 16px 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.clean-tab:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.clean-tab.active {
+  color: #ffffff;
+  background: rgba(138, 99, 210, 0.1);
+}
+
+.clean-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #8a63d2;
+}
+
+/* ================================================
+   TAB CONTENT AREAS
+   ================================================ */
+
+.clean-tab-content {
+  position: relative;
+  min-height: 400px;
+}
+
+.clean-tab-pane {
+  display: none;
+  padding: 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.clean-tab-pane.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================================
+   SOURCE TEXT STYLING
+   ================================================ */
+
+.clean-source-text {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  color: #ffffff;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* ================================================
+   CLEAN LOADING ANIMATION
+   ================================================ */
+
+.clean-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.clean-loading .loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(138, 99, 210, 0.2);
+  border-top: 3px solid #8a63d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.clean-loading p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ================================================
+   ENHANCED WORD DOCUMENT STYLING - PROFESSIONAL
+   ================================================ */
+
+.word-document-content {
+  background: #ffffff;
+  color: #2c3e50;
+  padding: 40px;
+  border-radius: 12px;
+  line-height: 1.8;
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin: 12px 0;
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.word-formatted-content {
+  font-size: 1rem;
+  color: #2c3e50;
+  line-height: 1.8;
+}
+
+.word-document-content .doc-paragraph {
+  margin: 0 0 18px 0;
+  text-align: left;
+  font-size: 1rem;
+  color: #2c3e50;
+  text-indent: 0;
+}
+
+.word-document-content .doc-heading {
+  color: #1a252f;
+  font-weight: 700;
+  margin: 32px 0 16px 0;
+  font-size: 1.4rem;
+  border-bottom: 3px solid #8a63d2;
+  padding-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.word-document-content .doc-subheading {
+  color: #34495e;
+  font-weight: 600;
+  margin: 24px 0 12px 0;
+  font-size: 1.2rem;
+}
+
+.word-document-content .doc-list {
+  margin: 20px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.word-document-content .doc-bullet,
+.word-document-content .doc-numbered {
+  margin: 12px 0;
+  color: #2c3e50;
+  line-height: 1.7;
+  padding-left: 28px;
+  position: relative;
+}
+
+.word-document-content .doc-bullet::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #8a63d2;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.word-document-content .doc-numbered::before {
+  content: counter(list-counter) ".";
+  position: absolute;
+  left: 0;
+  color: #8a63d2;
+  font-weight: 600;
+  counter-increment: list-counter;
+}
+
+.word-document-content strong {
+  color: #1a252f;
+  font-weight: 700;
+}
+
+.word-document-content em {
+  color: #5d6d7e;
+  font-style: italic;
+}
+
+.word-document-content .doc-divider {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #bdc3c7, transparent);
+  margin: 32px 0;
+}
+
+/* Better table styling if present */
+.word-document-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  background: #ffffff;
+}
+
+.word-document-content th,
+.word-document-content td {
+  border: 1px solid #e1e8ed;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.word-document-content th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Enhanced text formatting */
+.word-document-content code {
+  background: #f8f9fa;
+  color: #e74c3c;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 0.9em;
+}
+
+.word-document-content blockquote {
+  border-left: 4px solid #8a63d2;
+  margin: 24px 0;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  font-style: italic;
+  color: #5d6d7e;
+}
+
+/* ================================================
+   DOCUMENT VIEWER IMPROVEMENTS
+   ================================================ */
+
+.document-viewer {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pdf-embed-container iframe {
+  border: none !important;
+  border-radius: 8px !important;
+}
+
+.text-formatted-content {
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-height: 400px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.image-content-container img {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================================
+   METADATA IMPROVEMENTS
+   ================================================ */
+
+.source-metadata {
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metadata-item {
+  margin: 8px 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.metadata-item strong {
+  color: #8a63d2;
+  margin-right: 8px;
+}
+
+/* ================================================
+   DOCUMENT PREVIEW IMPROVEMENTS
+   ================================================ */
+
+.document-preview-section {
+  background: transparent;
+}
+
+.document-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.document-preview-header strong {
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.document-page-navigation {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.document-page-navigation .btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+.document-preview-info {
+  margin-top: 16px;
+  text-align: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.document-preview-info small {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+/* ================================================
+   ERROR STYLING IMPROVEMENTS
+   ================================================ */
+
+.document-preview-error {
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.document-preview-error .error-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.document-preview-error h4 {
+  color: #ffffff;
+  margin: 16px 0 8px 0;
+  font-weight: 600;
+}
+
+.document-preview-error p {
+  margin: 8px 0 24px 0;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+.error-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.error-actions .btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+}
+
+/* ================================================
+   PDF PREVIEW TABS
+   ================================================ */
+
+.pdf-preview-options {
+  padding: 16px 24px 0 24px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.preview-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.preview-tab {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.preview-tab:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.preview-tab.active {
+  background: #8a63d2;
+  border-color: #8a63d2;
+  color: #ffffff;
+}
+
+.pdf-text-preview,
+.pdf-embed-preview {
+  padding: 0 24px 24px 24px;
+}
+
+.pdf-preview-notice,
+.pdf-embed-notice {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.pdf-embed-container {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.pdf-view-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.pdf-view-actions .btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* ================================================
+   RESPONSIVE IMPROVEMENTS
+   ================================================ */
+
+@media (max-width: 768px) {
+  .source-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .clean-tab {
+    font-size: 0.9rem;
+    padding: 14px 16px;
+  }
+
+  .clean-tab-pane {
+    padding: 20px 16px;
+  }
+
+  .word-document-content {
+    padding: 20px;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-actions .btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* ================================================
+   SCROLLBAR STYLING
+   ================================================ */
+
+.clean-source-text::-webkit-scrollbar,
+.word-document-content::-webkit-scrollbar,
+.text-formatted-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.clean-source-text::-webkit-scrollbar-track,
+.word-document-content::-webkit-scrollbar-track,
+.text-formatted-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.clean-source-text::-webkit-scrollbar-thumb,
+.word-document-content::-webkit-scrollbar-thumb,
+.text-formatted-content::-webkit-scrollbar-thumb {
+  background: rgba(138, 99, 210, 0.5);
+  border-radius: 3px;
+}
+
+.clean-source-text::-webkit-scrollbar-thumb:hover,
+.word-document-content::-webkit-scrollbar-thumb:hover,
+.text-formatted-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(138, 99, 210, 0.7);
+}
+
+/* ================================================
+   WORD-TO-PDF CONVERSION NOTICES
+   ================================================ */
+
+.conversion-notice {
+  background: linear-gradient(135deg, #2a5934 0%, #3d7c47 100%);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #a8e6cf;
+  font-size: 0.9rem;
+}
+
+.conversion-icon {
+  font-size: 1.2rem;
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.conversion-text {
+  flex: 1;
+  font-weight: 500;
+}
+
+.conversion-available-notice {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #bbdefb;
+  font-size: 0.9rem;
+}
+
+.info-icon {
+  font-size: 1.1rem;
+  color: #2196f3;
+}
+
+.conversion-available-notice span {
+  flex: 1;
+}
+
+.conversion-available-notice .btn {
+  margin-left: 12px;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  background: rgba(33, 150, 243, 0.2);
+  color: #2196f3;
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.conversion-available-notice .btn:hover {
+  background: rgba(33, 150, 243, 0.3);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Enhanced converted Word viewer styles */
+.converted-word-viewer {
+  background: #1e1e1e;
+}
+
+.converted-word-viewer .pdf-embed-container {
+  background: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
