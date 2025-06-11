@@ -194,7 +194,7 @@ The application will create these directories automatically:
    ```
 
 3. **Access the application**:
-   - Open browser to `http://localhost:8000`
+   - Open browser to `http://localhost:5000`
    - The server runs on port 8000 by default
 
 ### Using the Interface
