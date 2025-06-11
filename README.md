@@ -126,7 +126,7 @@ A sophisticated Retrieval-Augmented Generation (RAG) application that combines m
    ```
 
 6. **Access the application**
-   - Open your browser and navigate to `http://localhost:8000`
+   - Open your browser and navigate to `http://localhost:5000`
    - Upload documents and start chatting!
 
 ### Detailed Setup
