@@ -450,10 +450,6 @@ See `MAINTENANCE.md` for detailed maintenance procedures.
 - **Documentation**: Update relevant markdown files
 - **Comments**: Clear, concise explanations for complex logic
 
-## 📄 License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
 ## 🆘 Support
 
 ### Getting Help
