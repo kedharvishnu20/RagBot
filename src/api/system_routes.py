@@ -10,7 +10,7 @@ import os
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["system"])
 
-@router.get("/", response_class=None)
+@router.get("/")
 def serve_frontend():
     """Serve the main frontend application"""
     try:

@@ -336,13 +336,12 @@ class ChatOrchestrator:
                     sources=[safe_to_dict(source) for source in session_sources],
                     message_sources=[[safe_to_dict(s) for s in ms] for ms in message_sources]
                 )
-            else:
-                response = ChatResponse(
+            else:                response = ChatResponse(
                     answers=answers,
                     sources=[safe_to_dict(source) for source in session_sources],
                     message_sources=[[safe_to_dict(s) for s in ms] for ms in message_sources]
                 )
-
+            
             return response
             
         except Exception as e:
@@ -369,7 +368,7 @@ class ChatOrchestrator:
     async def rebuild_vector_index(self, api_key_index: int = 0) -> Dict[str, str]:
         """Rebuild the vector index"""
         try:
-            self.vector_service.get_retriever(api_key_index, force_rebuild=True)
+            result = await self.vector_service.rebuild_index(api_key_index)
             return {"status": "success", "message": "Vector index rebuilt successfully"}
         except Exception as e:
             logger.error(f"Error rebuilding vector index: {e}")

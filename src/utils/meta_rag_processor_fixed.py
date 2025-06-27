@@ -224,6 +224,7 @@ class MetaRAGProcessorFixed:
         scored_docs.sort(key=lambda x: x[1], reverse=True)
         return [doc for doc, score in scored_docs[:self.max_documents]]
 
+    
     async def _generate_comprehensive_answer(self, query: str, docs: List[Document]) -> str:
         """Generate a comprehensive answer using a single API call"""
         
@@ -279,6 +280,7 @@ ANSWER:"""
         
         return f"📄 Based on the available documents: {combined_content[:800]}{'...' if len(combined_content) > 800 else ''}"
 
+    
     async def _handle_no_documents(self, query: str) -> str:
         """Handle cases where no relevant documents are found"""
         fallback_prompt = f"The user asked: '{query}'. No relevant documents were found. Please provide a helpful response acknowledging this and suggesting how they might rephrase their question or what type of information might be needed."
