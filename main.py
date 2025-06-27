@@ -151,6 +151,11 @@ def serve_sources_preview():
         return HTMLResponse(f"<h1>Sources Preview</h1><p>Error loading sources page: {e}</p>")
 
 # Add fallback routes for misrouted requests (likely from cached JS)
+@app.get("/health")
+def health_check():
+    """Health check endpoint for Render deployment"""
+    return {"status": "healthy", "service": "RAG AI Server"}
+
 @app.get("/chat/usage")
 def redirect_chat_usage():
     """Redirect old /chat/usage requests to correct /api/chat/usage endpoint"""
@@ -167,6 +172,20 @@ def redirect_usage():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8081))
+    host = "0.0.0.0"
+    
     print("🚀 Starting RAG AI Server...")
-    print(f"📍 URL: http://0.0.0.0:{port}")
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    print(f"📍 URL: http://{host}:{port}")
+    print(f"🔗 Binding to host: {host} port: {port}")
+    print(f"🌍 Environment PORT: {os.environ.get('PORT', 'Not set (using default 8081)')}")
+    
+    # Configure uvicorn with explicit settings for cloud deployment
+    uvicorn.run(
+        "main:app",  # Use string reference instead of app object
+        host=host, 
+        port=port,
+        log_level="info",
+        access_log=True,
+        reload=False,  # Disable reload for production
+        workers=1
+    )
