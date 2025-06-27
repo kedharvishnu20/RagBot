@@ -166,6 +166,7 @@ def redirect_usage():
 # All other endpoints are handled by routers
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8081))
     print("🚀 Starting RAG AI Server...")
-    print("📍 URL: http://127.0.0.1:8081")
-    uvicorn.run(app, host="127.0.0.1", port=8081)
+    print(f"📍 URL: http://0.0.0.0:{port}")
+    uvicorn.run(app, host="0.0.0.0", port=port)
